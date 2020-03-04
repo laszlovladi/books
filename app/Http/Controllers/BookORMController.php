@@ -28,11 +28,21 @@ class BookORMController extends Controller
     }
 
     public function store(Request $request){
+        // if there is a file named 'image_file' in $request
+        if ($file = $request->file('image_file')){
+ //                         input name          folder     new name     disk specified in filesystem.php  
+            // $request->file('image_file')->store('covers',              'uploads');
+            $original_name = $file->getClientOriginalName();
+            $request->file('image_file')->storeAs('covers', $original_name, 'uploads');
+        }
+
         $b = new Book;
         $b->title = $request->input('title');
         $b->authors = $request->input('authors');
-        $b->image = $request->input('image');
+        // $b->image = $request->input('image');
+        $b->image = '/uploads/covers/'.$original_name;
         $b->publisher_id = $request->input('publisher');
+        $b->genre_id = 1;
         $b->save();
         return redirect('/books-orm/'. $b->id);
 

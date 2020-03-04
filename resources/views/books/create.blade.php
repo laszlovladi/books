@@ -1,12 +1,12 @@
-<form action="/books-orm" method="post">
+<form action="/books-orm" method="post" enctype="multipart/form-data">
   @csrf  {{-- csrf token prevents form 419 eror--}}
-  <label>Title:</label>
-  <input tipe="text" name="title"><br>
-  <label>Authors:</label>
-  <input tipe="text" name="authors"><br>
-  <label>Url:</label>
-  <input tipe="text" name="image"><br>
-  <label>Publisher:</label>
+  <label>Title:</label><br>
+  <input type="text" name="title"><br>
+  <label>Authors:</label><br>
+  <input type="text" name="authors"><br>
+  <label>Image</label><br>
+  <input type="file" name="image_file"><br>
+  <label>Publisher:</label><br>
   <select name="publisher"><br>
     {{-- {{ use App\Publisher; $publishers = Publisher::all();}} --}}
     @foreach ($publishers as $p)

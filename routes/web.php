@@ -29,6 +29,8 @@ Route::get('/books/{id}/edit', 'BookORMController@edit');
 Route::post('/books/{id}/edit', 'BookORMController@update');
 Route::get('/books/{id}/delete', 'BookORMController@delete');
 
+Route::get('books-qb', 'BookQueryBuilderController@index');
+
 Route::get('/publishers', 'PublisherController@index');
 Route::get('/publishers/create', 'PublisherController@create');
 Route::get('/publishers/{publisher_id}', 'PublisherController@show');   
