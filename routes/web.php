@@ -47,3 +47,7 @@ Route::post('/cart/add/', 'CartController@postAdd');
 
 Route::post('/rewiews/{id}', 'ReviewController@store');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
