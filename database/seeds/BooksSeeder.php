@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Book;
+use App\Publisher;
 
 class BooksSeeder extends Seeder
 {
@@ -12,19 +13,38 @@ class BooksSeeder extends Seeder
      */
     public function run()
     {
-        // take data from json file
-        $source_file = storage_path('books.json');  //generates abs path to file within storage folder
-        $data = json_decode(file_get_contents($source_file), true);    // true  decodes it as array, false - object
+        DB::statement('TRUNCATE TABLE books');
+        // DB::statement('TRUNCATE TABLE publishers');
 
-        // put it into our db
-        foreach($data as $d){
+        // take data from the JSON file
+        $source_file = storage_path('books.json');
+        
+        $data = json_decode(
+            file_get_contents($source_file), 
+            true
+        );
+
+        $publishers_by_name = Publisher::pluck('id', 'name')->toArray();
+
+        // put it into our database 
+        foreach ($data as $book_data) {
+
+            if (!isset($publishers_by_name[$book_data['publisher']])) {
+                $publisher = new Publisher;
+                $publisher->name = $book_data['publisher'];
+                $publisher->save();
+
+                $publishers_by_name[$book_data['publisher']] = $publisher->id;
+            }
+
             $book = new Book;
-            // Book::create();      //can be also used
-            $book->publisher_id = 1;
+            $book->publisher_id = $publishers_by_name[$book_data['publisher']];
             $book->genre_id = 1;
-            $book->title    = $d['title'];
-            $book->authors  = $d['author'];
-            $book->image    = $d['image'];
+            $book->fill([
+                'title' => $book_data['title'],
+                'authors' => $book_data['author'],
+                'image' => $book_data['image'],
+            ]);
             $book->save();
         }
     }

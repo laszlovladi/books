@@ -23,7 +23,10 @@
   @foreach ($books as $book)
     <div class="book">
       <h2>{{$book->title}}</h2>
-      By {{$book->authors}}
+      By {{$book->authors}}<br>
+      @if ($book->publisher)
+        Published by {{$book->publisher->name}}
+      @endif
     </div>
   @endforeach
 
