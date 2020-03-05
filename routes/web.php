@@ -48,6 +48,11 @@ Route::post('/cart/add/', 'CartController@postAdd');
 Route::post('/rewiews/{id}', 'ReviewController@store')->middleware('auth');
 Route::delete('/rewiews/{id}', 'ReviewController@delete')->middleware('can:admin');
 
+Route::get('/bookshops', 'BookshopController@index');
+Route::get('/bookshops/create', 'BookshopController@create');
+Route::post('/bookshops', 'BookshopController@store');
+
+
 
 Auth::routes();
 
