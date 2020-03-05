@@ -41,8 +41,15 @@ class BookshopController extends Controller
     public function addBook(Request $request, $id){
         $bookshop = Bookshop::findOrFail($id);
         $book = $request->input('book');
-        // $bookshop->books()->attach($book);
-        $bookshop->books()->syncWithoutDetaching($book);   // attaches only if doesn't already exist
+        $count = $request->input('count');
+        $oldCount = $bookshop->books()->find($book)->pivot->count;
+        $count = $oldCount + $count;
+        if($bookshop->books()->find($book) === null) {
+            $bookshop->books()->attach($book, ['count' => $count]);
+        }else{
+            $bookshop->books()->updateExistingPivot($book, ['count' => $count]);
+        }
+        // $bookshop->books()->syncWithoutDetaching($book);   // attaches only if doesn't already exist
 
 
         return redirect()->back();

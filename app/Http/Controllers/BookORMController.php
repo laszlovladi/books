@@ -7,6 +7,7 @@ use App\Book;
 use App\Publisher;
 use App\Genre;
 use App\Review;
+use App\Bookshop;
 
 class BookORMController extends Controller
 {
@@ -17,9 +18,10 @@ class BookORMController extends Controller
 
     public function show($id){  // it will be overridden by 1 unless '?' is put in Book route
         $book = Book::findOrFail($id);
+        $bookshops = Bookshop::all();
         $reviews = Review::where('book_id', $id)->get();
         // $publisher = Publisher::find($book->publisher_id);
-        return view('books/show', compact('book', 'reviews'));   //, 'publisher'
+        return view('books/show', compact('book', 'reviews', 'bookshops'));   //, 'publisher'
     }
 
     public function create(){
@@ -70,6 +72,23 @@ class BookORMController extends Controller
         $book = Book::find($id);
         $book->delete();
         return redirect('/books-orm/');
+    }
+
+    public function addBookshop(Request $request, $id){
+        $book = Book::findOrFail($id);
+        $bookshop = $request->input('bookshop');
+        // $bookshop->books()->attach($book);
+        $book->bookshops()->syncWithoutDetaching($bookshop);   // attaches only if doesn't already exist
+
+
+        return redirect()->back();
+    }
+
+    public function removeBookshop(Request $request, $id){
+        $book = Book::findOrFail($id);
+        $bookshop = $request->input('bookshop');
+        $book->bookshops()->detach($bookshop);
+        return redirect()->back();  
     }
 
 }

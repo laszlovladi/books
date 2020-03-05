@@ -28,6 +28,8 @@ Route::post('/books-orm', 'BookORMController@store');
 Route::get('/books/{id}/edit', 'BookORMController@edit');
 Route::post('/books/{id}/edit', 'BookORMController@update');
 Route::get('/books/{id}/delete', 'BookORMController@delete');
+Route::post('/books-orm/{id}/add-bookshop', 'BookORMController@addBookshop');
+Route::post('/books-orm/{id}/remove-bookshop', 'BookORMController@removeBookshop');
 
 Route::get('books-qb', 'BookQueryBuilderController@index');
 

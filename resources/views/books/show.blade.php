@@ -59,6 +59,29 @@
       <h2>Please <a href="{{ route('login') }}">login</a> to leave reviews</h2>
     @endguest
 
+    <form action="{{ action('BookORMController@addBookshop', [$book->id]) }}" method="post">
+      @csrf
+      <select name="bookshop"  id="">
+        @foreach ($bookshops as $bookshop)
+          <option value="{{$bookshop->id}}">{{$bookshop->name}}</option>
+        @endforeach
+      </select>
+      <button type="submit">Add</button>
+    </form><br>
+    
+    <h3>Available in bookshops:</h3>
+  
+    @foreach ($book->bookshops as $bookshop)
+      <strong>{{$bookshop->name}}</strong><br>
+      {{$bookshop->city}}<br>
+      <form action="{{ action('BookORMController@removeBookshop', [$book->id]) }}" method="post">
+        @csrf
+        <input type="hidden" name="bookshop" value="{{ $bookshop->id }}">
+        <button type="submit">Remove bookshop</button>
+      </form><br>
+    @endforeach
+  
+
 <br>
 @elseif (request()->route()->action['controller'] == "App\Http\Controllers\BookORMController@index") 
   <a href="{{ action('BookORMController@show', [$book->id]) }}" style="text-decoration: none">
