@@ -74,13 +74,38 @@
     @foreach ($book->bookshops as $bookshop)
       <strong>{{$bookshop->name}}</strong><br>
       {{$bookshop->city}}<br>
-      <form action="{{ action('BookORMController@removeBookshop', [$book->id]) }}" method="post">
-        @csrf
-        <input type="hidden" name="bookshop" value="{{ $bookshop->id }}">
-        <button type="submit">Remove bookshop</button>
-      </form><br>
+      @can('admin')
+        <form action="{{ action('BookORMController@removeBookshop', [$book->id]) }}" method="post">
+          @csrf
+          <input type="hidden" name="bookshop" value="{{ $bookshop->id }}">
+          <button type="submit">Remove bookshop</button>
+        </form><br>
+      @endcan
     @endforeach
+ 
+    <h3>Add related book</h3>
+    <form action="{{ action('BookORMController@addRelated', [$book->id]) }}" method="post">
+      @csrf
+      <select name="related"  id="">
+        @foreach ($books as $related)
+          <option value="{{$related->id}}">{{$related->title}}</option>
+        @endforeach
+      </select>
+      <button type="submit">Add</button>
+    </form><br>
+    
+    <h3>Related books:</h3>
   
+    @foreach ($book->related as $related)
+      <strong>{{$related->title}}</strong><br>
+      {{$related->authors}}<br>
+      <img src="{{$related->image}}" alt="" style="width: 100px"><br>
+        <form action="{{ action('BookORMController@removeRelated', [$book->id]) }}" method="post">
+          @csrf
+          <input type="hidden" name="related" value="{{ $related->id }}">
+          <button type="submit">Remove</button>
+        </form><br>
+    @endforeach
 
 <br>
 @elseif (request()->route()->action['controller'] == "App\Http\Controllers\BookORMController@index") 

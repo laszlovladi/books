@@ -19,9 +19,10 @@ class BookORMController extends Controller
     public function show($id){  // it will be overridden by 1 unless '?' is put in Book route
         $book = Book::findOrFail($id);
         $bookshops = Bookshop::all();
+        $books = Book::all();
         $reviews = Review::where('book_id', $id)->get();
         // $publisher = Publisher::find($book->publisher_id);
-        return view('books/show', compact('book', 'reviews', 'bookshops'));   //, 'publisher'
+        return view('books/show', compact('book', 'reviews', 'bookshops', 'books'));   //, 'publisher'
     }
 
     public function create(){
@@ -88,6 +89,23 @@ class BookORMController extends Controller
         $book = Book::findOrFail($id);
         $bookshop = $request->input('bookshop');
         $book->bookshops()->detach($bookshop);
+        return redirect()->back();  
+    }
+
+    public function addRelated(Request $request, $id){
+        $book = Book::findOrFail($id);
+        $related = $request->input('related');
+        // $bookshop->books()->attach($book);
+        $book->related()->syncWithoutDetaching($related);   // attaches only if doesn't already exist
+
+
+        return redirect()->back();
+    }
+
+    public function removeRelated(Request $request, $id){
+        $book = Book::findOrFail($id);
+        $related = $request->input('related');
+        $book->related()->detach($related);
         return redirect()->back();  
     }
 

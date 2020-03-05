@@ -28,4 +28,9 @@ class Book extends Model
         return $this->belongsToMany(Bookshop::class)
                     ->withPivot(['count']);
     }
+
+    public function related(){
+        return $this->belongsToMany(Book::class, 'book_related', 'book_id', 'related_id');
+    }
+
 }

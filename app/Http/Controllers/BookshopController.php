@@ -42,8 +42,8 @@ class BookshopController extends Controller
         $bookshop = Bookshop::findOrFail($id);
         $book = $request->input('book');
         $count = $request->input('count');
-        $oldCount = $bookshop->books()->find($book)->pivot->count;
-        $count = $oldCount + $count;
+        // $oldCount = $bookshop->books()->find($book)->pivot->count;
+        // $count = $oldCount + $count;
         if($bookshop->books()->find($book) === null) {
             $bookshop->books()->attach($book, ['count' => $count]);
         }else{
