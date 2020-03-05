@@ -53,6 +53,7 @@ Route::get('/bookshops/create', 'BookshopController@create');
 Route::post('/bookshops', 'BookshopController@store');
 Route::get('/bookshops/{id}', 'BookshopController@show');
 Route::post('/bookshops/{id}/add-book', 'BookshopController@addBook');
+Route::post('/bookshops/{id}/remove-book', 'BookshopController@removeBook');
 
 
 Auth::routes();

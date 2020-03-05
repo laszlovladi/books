@@ -41,7 +41,18 @@ class BookshopController extends Controller
     public function addBook(Request $request, $id){
         $bookshop = Bookshop::findOrFail($id);
         $book = $request->input('book');
-        $bookshop->books()->attach($book);
-        return $request;
+        // $bookshop->books()->attach($book);
+        $bookshop->books()->syncWithoutDetaching($book);   // attaches only if doesn't already exist
+
+
+        return redirect()->back();
     }
+
+    public function removeBook(Request $request, $id){
+        $bookshop = Bookshop::findOrFail($id);
+        $book = $request->input('book');
+        $bookshop->books()->detach($book);
+        return redirect()->back();
+    }
+
 }
