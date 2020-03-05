@@ -51,7 +51,8 @@ Route::delete('/rewiews/{id}', 'ReviewController@delete')->middleware('can:admin
 Route::get('/bookshops', 'BookshopController@index');
 Route::get('/bookshops/create', 'BookshopController@create');
 Route::post('/bookshops', 'BookshopController@store');
-
+Route::get('/bookshops/{id}', 'BookshopController@show');
+Route::post('/bookshops/{id}/add-book', 'BookshopController@addBook');
 
 
 Auth::routes();
