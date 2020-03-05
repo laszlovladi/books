@@ -45,7 +45,8 @@ Route::get('/cart', 'CartController@index');
 Route::get('/cart/add/{id}', 'CartController@add');
 Route::post('/cart/add/', 'CartController@postAdd');
 
-Route::post('/rewiews/{id}', 'ReviewController@store');
+Route::post('/rewiews/{id}', 'ReviewController@store')->middleware('auth');
+Route::delete('/rewiews/{id}', 'ReviewController@delete')->middleware('can:admin');
 
 
 Auth::routes();
